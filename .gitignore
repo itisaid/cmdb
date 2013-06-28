@@ -1,0 +1,7 @@
+.classpath
+.settings
+.project
+target
+antx.properties
+*.old
+META-INF
