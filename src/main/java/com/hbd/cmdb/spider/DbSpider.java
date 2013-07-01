@@ -4,10 +4,11 @@ public class DbSpider {
 
 	/**
 	 * @param args
+	 * @throws Exception
 	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+	public static void main(String[] args) throws Exception {
+		MovieCollector mc = new MovieCollector();
+		mc.collect();
 	}
 
 }
