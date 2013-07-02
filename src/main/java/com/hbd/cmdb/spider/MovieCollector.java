@@ -1,57 +1,132 @@
 package com.hbd.cmdb.spider;
 
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
+import java.util.Set;
+import java.util.Stack;
 
 public class MovieCollector {
 
 	String rootUrl = "http://movie.douban.com/tag/";
-	HttpClient httpClient = new DefaultHttpClient();
+
+	Set<String> movieUrls = new HashSet<String>();
+	Set<String> tags = new HashSet<String>();
+	String tagPath = BaseInfo.path + "tag.txt";
+	FileOutputStream out;
+
+	FileOutputStream tagOut;
 
 	public void collect() throws Exception {
 		try {
-			HttpGet httpget = new HttpGet(rootUrl);
+			readSubject();
+			out = new FileOutputStream(new File(BaseInfo.subjectPath), true);
+			tagOut = new FileOutputStream(new File(tagPath), true);
 
-			System.out.println("executing request " + httpget.getURI());
+			processTag(SpiderUtil.request(rootUrl));
 
-			// Create a response handler
-			ResponseHandler<String> responseHandler = new BasicResponseHandler();
-			String responseBody = httpClient.execute(httpget, responseHandler);
-			processTag(responseBody);
-			// System.out.println(responseBody);
 		} finally {
-			// When HttpClient instance is no longer needed,
-			// shut down the connection manager to ensure
-			// immediate deallocation of all system resources
-			httpClient.getConnectionManager().shutdown();
+			SpiderUtil.httpClient.getConnectionManager().shutdown();
+			out.close();
+			tagOut.close();
 		}
+	}
+
+	void readSubject() throws Exception {
+		BufferedReader br = new BufferedReader(new FileReader(
+				BaseInfo.subjectPath));
+		String line;
+		while ((line = br.readLine()) != null) {
+			movieUrls.add(line);
+		}
+		br.close();
+		BufferedReader brt = new BufferedReader(new FileReader(tagPath));
+		String linet;
+		while ((linet = brt.readLine()) != null) {
+			tags.add(linet);
+		}
+		brt.close();
 	}
 
 	void processTag(String tagPage) throws Exception {
 		List<String> tagList = findLink(tagPage);
-		System.out.println(tagList);
 		for (String tag : tagList) {
 			if (tag.charAt(0) == '.') {
-				String tagLink = rootUrl + tag;
-				HttpGet hg = new HttpGet(tagLink);
-				ResponseHandler<String> res = new BasicResponseHandler();
-				String rb = httpClient.execute(hg, res);
-				List<String> movieLinkList = findLink(rb);
-				for (String movieLink : movieLinkList) {
-					if (isMovieLink(movieLink)) {
-						System.out.println(movieLink);
-					}
+				if (!tags.contains(tag)) {
+					String tagLink = rootUrl + tag;
+					processTagPage(tagLink);
+					tags.add(tag);
+					tagOut.write((tag + "\r\n").getBytes());
 				}
 			}
 		}
+	}
+
+	void processTagPage(String tagLink) throws Exception {
+		System.out.println(tagLink);
+		String rb = getTagPage(tagLink);
+		findMovieInTagPage(rb);
+		String nextPage = getNextTagPage(rb);
+		if (nextPage != null) {
+			processTagPage(nextPage);
+		}
+	}
+
+	String getNextTagPage(String rb) {
+		int ind = rb.lastIndexOf("后页");
+		if (ind == -1) {
+			return null;
+		}
+		Stack stack = new Stack();
+		int j = ind;
+		boolean ok = false;
+		int i = 0;
+		while (true) {
+			if (ok) {
+				stack.push(rb.charAt(j));
+			}
+			if (rb.charAt(j) == '"') {
+				i++;
+			}
+			j--;
+			if (i == 1) {
+				ok = true;
+			}
+			if (i >= 2) {
+				stack.pop();
+				break;
+			}
+		}
+		StringBuffer sb = new StringBuffer();
+		while (!stack.isEmpty()) {
+			sb.append(stack.pop());
+		}
+		String s = sb.toString();
+		if (s.indexOf("http") == -1) {
+			return null;
+		}
+		return s;
+	}
+
+	void findMovieInTagPage(String res) throws Exception {
+		List<String> movieLinkList = findLink(res);
+		for (String movieLink : movieLinkList) {
+			if (isMovieLink(movieLink)) {
+				String subject = movieLink.split("/")[4];
+				if (!movieUrls.contains(subject)) {
+					movieUrls.add(subject);
+					out.write((subject + "\r\n").getBytes());
+				}
+			}
+		}
+	}
+
+	String getTagPage(String link) throws Exception {
+		return SpiderUtil.request(link);
 	}
 
 	boolean isMovieLink(String link) {
