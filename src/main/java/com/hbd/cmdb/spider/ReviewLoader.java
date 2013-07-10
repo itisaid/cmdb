@@ -1,22 +1,16 @@
 package com.hbd.cmdb.spider;
 
-/**
- * create subject.html
- * 
- * @author frank
- * 
- */
-public class SubjectLoader {
+public class ReviewLoader {
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		WorkerThread wt = new WorkerThread(new SubjectWorker());
+		WorkerThread wt = new WorkerThread(new ReviewWorker());
 		wt.start();
 		while (true) {
 			if (wt.isError()) {
-				wt = new WorkerThread(new SubjectWorker());
+				wt = new WorkerThread(new ReviewWorker());
 				wt.start();
 			}
 			if (wt.isFinished()) {

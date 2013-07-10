@@ -10,6 +10,13 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
+import com.hbd.cmdb.BaseInfo;
+
+/**
+ * 
+ * @author frank
+ * 
+ */
 public class MovieCollector {
 
 	String rootUrl = "http://movie.douban.com/tag/";
@@ -53,7 +60,7 @@ public class MovieCollector {
 	}
 
 	void processTag(String tagPage) throws Exception {
-		List<String> tagList = findLink(tagPage);
+		List<String> tagList = SpiderUtil.findLink(tagPage);
 		for (String tag : tagList) {
 			if (tag.charAt(0) == '.') {
 				if (!tags.contains(tag)) {
@@ -113,7 +120,7 @@ public class MovieCollector {
 	}
 
 	void findMovieInTagPage(String res) throws Exception {
-		List<String> movieLinkList = findLink(res);
+		List<String> movieLinkList = SpiderUtil.findLink(res);
 		for (String movieLink : movieLinkList) {
 			if (isMovieLink(movieLink)) {
 				String subject = movieLink.split("/")[4];
@@ -137,26 +144,4 @@ public class MovieCollector {
 		}
 	}
 
-	List<String> findLink(String page) {
-		List<String> linkList = new ArrayList<String>();
-		int length = page.length();
-		for (int i = 0; i < length; i++) {
-			if (page.charAt(i) == '<' && page.charAt(i + 1) == 'a'
-					&& page.charAt(i + 2) == ' ' && page.charAt(i + 3) == 'h'
-					&& page.charAt(i + 4) == 'r' && page.charAt(i + 5) == 'e'
-					&& page.charAt(i + 6) == 'f' && page.charAt(i + 7) == '='
-					&& page.charAt(i + 8) == '"') {
-				int j = i + 9;
-				StringBuffer sb = new StringBuffer();
-				char ca = page.charAt(j);
-				while (ca != '"') {
-					sb.append(ca);
-					ca = page.charAt(++j);
-				}
-				linkList.add(sb.toString());
-				i = j;
-			}
-		}
-		return linkList;
-	}
 }

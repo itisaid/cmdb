@@ -1,4 +1,4 @@
-package com.hbd.cmdb.spider;
+package com.hbd.cmdb;
 
 public class BaseInfo {
 	public static String path = "/home/frank/work/github/cmdb/research/";

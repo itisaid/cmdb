@@ -1,5 +1,11 @@
 package com.hbd.cmdb.spider;
 
+/**
+ * create research/subject.txt
+ * 
+ * @author frank
+ * 
+ */
 public class DbSpider {
 
 	/**
