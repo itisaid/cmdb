@@ -34,6 +34,9 @@ public class ReviewWorker extends BaseWorker {
 						continue;
 					}
 					String reviewPage = SpiderUtil.request(link);
+					if (res == null) {
+						continue;
+					}
 					FileOutputStream subOs = new FileOutputStream(new File(
 							BaseInfo.output + subject + "/"
 									+ link.split("/")[4] + ".rev"));

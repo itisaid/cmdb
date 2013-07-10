@@ -4,13 +4,14 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.util.Stack;
 
 import com.hbd.cmdb.BaseInfo;
+
 /**
  * create subject.txt
+ * 
  * @author frank
- *
+ * 
  */
 public class SubjectParser {
 	public static void main(String[] args) throws Exception {
@@ -31,25 +32,25 @@ public class SubjectParser {
 			StringBuffer content = new StringBuffer();
 			while ((line = br.readLine()) != null) {
 				if (line.indexOf("itemreviewed") != -1) {
-					content.append(filterTag(line) + ", ");
+					content.append(ParserUtil.filterTag(line) + ", ");
 					if ((line = br.readLine()) != null
 							&& line.indexOf("year") != -1) {
-						content.append(filterTag(line) + "\r\n");
+						content.append(ParserUtil.filterTag(line) + "\r\n");
 					}
 				}
 				if (line.indexOf("\"info\"") != -1 && line.indexOf("div") != -1) {
-					splitLine(content);
-					content.append(getInfo(br, "div"));
+					ParserUtil.splitLine(content);
+					content.append(ParserUtil.getInfo(br, "div"));
 				}
 				if (line.indexOf("\"interest_sectl\"") != -1
 						&& line.indexOf("div") != -1) {
-					splitLine(content);
-					content.append(getInfo(br, "div"));
+					ParserUtil.splitLine(content);
+					content.append(ParserUtil.getInfo(br, "div"));
 				}
 				if (line.indexOf("\"related_info\"") != -1
 						&& line.indexOf("div") != -1) {
-					splitLine(content);
-					content.append(getInfo(br, "div"));
+					ParserUtil.splitLine(content);
+					content.append(ParserUtil.getInfo(br, "div"));
 				}
 			}
 			br.close();
@@ -64,50 +65,4 @@ public class SubjectParser {
 		totalOut.close();
 	}
 
-	String getInfo(BufferedReader br, String tag) throws Exception {
-		Stack<Boolean> stack = new Stack<Boolean>();
-		stack.push(true);
-		String line;
-		StringBuffer content = new StringBuffer();
-		while ((line = br.readLine()) != null) {
-			if (line.indexOf("<" + tag) != -1
-					&& !(line.indexOf("</" + tag) != -1)) {
-				stack.push(true);
-			}
-			if (!(line.indexOf("<" + tag) != -1)
-					&& line.indexOf("</" + tag) != -1) {
-				stack.pop();
-			}
-			if (stack.isEmpty()) {
-				break;
-			}
-			String text = filterTag(line);
-			if (text != null && !"".equals(text)) {
-				content.append(text + "\r\n");
-			}
-		}
-		return content.toString();
-	}
-
-	void splitLine(StringBuffer sb) {
-		sb.append("-----\r\n");
-	}
-
-	String filterTag(String line) {
-		int length = line.length();
-		boolean isTag = false;
-		StringBuffer sb = new StringBuffer();
-		for (int i = 0; i < length; i++) {
-			if (line.charAt(i) == '<') {
-				isTag = true;
-			}
-			if (!isTag) {
-				sb.append(line.charAt(i));
-			}
-			if (line.charAt(i) == '>' && isTag) {
-				isTag = false;
-			}
-		}
-		return sb.toString().trim();
-	}
 }

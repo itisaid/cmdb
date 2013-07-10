@@ -40,10 +40,12 @@ public class SpiderUtil {
 			responseBody = SpiderUtil.httpClient.execute(httpget,
 					responseHandler);
 		} catch (HttpResponseException e) {
-			if (e.getStatusCode() != 404) {
-				throw e;
-			}
-		} finally {
+//			if (e.getStatusCode() != 404) {
+//				throw e;
+//			}
+		} catch(Throwable t){
+			
+		}finally {
 			httpClient.getConnectionManager().shutdown();
 		}
 		return responseBody;
