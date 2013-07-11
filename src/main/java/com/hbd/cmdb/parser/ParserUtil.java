@@ -21,6 +21,10 @@ public class ParserUtil {
 		String line;
 		StringBuffer content = new StringBuffer();
 		while ((line = br.readLine()) != null) {
+			String text = filterTag(line);
+			if (text != null && !"".equals(text)) {
+				content.append(text + "\r\n");
+			}
 			if (line.indexOf("<" + tag) != -1
 					&& !(line.indexOf("</" + tag) != -1)) {
 				stack.push(true);
@@ -32,10 +36,7 @@ public class ParserUtil {
 			if (stack.isEmpty()) {
 				break;
 			}
-			String text = filterTag(line);
-			if (text != null && !"".equals(text)) {
-				content.append(text + "\r\n");
-			}
+
 		}
 		return content.toString();
 	}

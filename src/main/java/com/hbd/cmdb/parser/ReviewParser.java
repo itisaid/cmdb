@@ -3,17 +3,20 @@ package com.hbd.cmdb.parser;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+
+import com.hbd.cmdb.BaseInfo;
 
 public class ReviewParser {
 
 	/**
 	 * @param args
+	 * @throws Exception
 	 */
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	public static void main(String[] args) throws Exception {
+		ReviewParser rp = new ReviewParser();
+		rp.parse();
 
 	}
 
@@ -21,6 +24,10 @@ public class ReviewParser {
 		File[] fs = ParserUtil.listSubjectDir();
 		for (File f : fs) {
 			String subPath = f.getAbsolutePath();
+			File reviewData = new File(subPath + BaseInfo.reviewFile);
+			if (reviewData.exists()) {
+				continue;
+			}
 			File subDir = new File(subPath);
 			File[] reviews = subDir.listFiles(new FileFilter() {
 				public boolean accept(File dir) {
@@ -33,6 +40,9 @@ public class ReviewParser {
 				}
 			});
 			StringBuffer content = new StringBuffer();
+			if (reviews == null) {
+				continue;
+			}
 			for (File review : reviews) {
 				BufferedReader br = new BufferedReader(new FileReader(review));
 				String line;
@@ -41,14 +51,22 @@ public class ReviewParser {
 							&& line.indexOf("div") != -1) {
 						ParserUtil.splitLine(content);
 						content.append(ParserUtil.filterTag(line));
+						if (line.indexOf("</div>") == -1) {
+							content.append(ParserUtil.getInfo(br, "div"));
+						} else {
+							content.append("\r\n".getBytes());
+						}
+
 					}
 				}
 				br.close();
 			}
-			FileOutputStream subOut = new FileOutputStream(new File(subPath
-					+ "/review.data"));
-			subOut.write(content.toString().getBytes());
-			subOut.close();
+			if (content.toString().length() > 1) {
+				FileOutputStream subOut = new FileOutputStream(new File(subPath
+						+ BaseInfo.reviewFile));
+				subOut.write(content.toString().getBytes());
+				subOut.close();
+			}
 		}
 	}
 
