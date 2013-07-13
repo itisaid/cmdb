@@ -19,7 +19,7 @@ import com.hbd.cmdb.BaseInfo;
 import com.hbd.cmdb.parser.ParserUtil;
 
 public class WordCount {
-	String wordCountFile = BaseInfo.indexPath + "wordcount.dat";
+
 
 	/**
 	 * @param args
@@ -48,6 +48,7 @@ public class WordCount {
 				}
 				countLine(countMap, line);
 			}
+			br.close();
 		}
 
 		// sort
@@ -63,16 +64,14 @@ public class WordCount {
 
 		});
 
-		FileOutputStream subOut = new FileOutputStream(new File(wordCountFile));
+		FileOutputStream subOut = new FileOutputStream(new File(IndexInfo.wordCountFile));
 		// for (Entry<String, Integer> entry : countMap.entrySet()) {
 		for (Entry<String, Integer> entry : list) {
 			String word = entry.getKey();
 			int count = entry.getValue();
 			subOut.write((word + " " + count + "\r\n").toString().getBytes());
 		}
-
 		subOut.close();
-
 	}
 
 	void countLine(Map<String, Integer> countMap, String line) {

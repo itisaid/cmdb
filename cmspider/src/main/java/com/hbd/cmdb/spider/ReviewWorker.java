@@ -25,6 +25,7 @@ public class ReviewWorker extends BaseWorker {
 				dir.mkdir();
 			}
 			List<String> linkList = SpiderUtil.findLink(res);
+			boolean hasReview = false;
 			for (String link : linkList) {
 				if (isReviewLink(link) && !reviewUrl.contains(link)) {
 					String reviewId = link.split("/")[4];
@@ -34,9 +35,10 @@ public class ReviewWorker extends BaseWorker {
 						continue;
 					}
 					String reviewPage = SpiderUtil.request(link);
-					if (res == null) {
+					if (reviewPage == null) {
 						continue;
 					}
+					hasReview = true;
 					FileOutputStream subOs = new FileOutputStream(new File(
 							BaseInfo.output + subject + "/"
 									+ link.split("/")[4] + ".rev"));
@@ -46,7 +48,7 @@ public class ReviewWorker extends BaseWorker {
 				}
 			}
 			String nextUrl = getNextPage(res);
-			if (nextUrl != null) {
+			if (nextUrl != null && hasReview) {
 				nextUrl = url + nextUrl;
 				res = SpiderUtil.request(nextUrl);
 			} else {

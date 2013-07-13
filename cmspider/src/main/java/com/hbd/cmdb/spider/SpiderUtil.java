@@ -25,7 +25,7 @@ public class SpiderUtil {
 		int i = lb++ % 3;
 		httpClient.getParams().setParameter(ConnRoutePNames.DEFAULT_PROXY,
 				proxys[i]);
-		Thread.sleep(1000);
+		Thread.sleep(200);
 	}
 
 	public static String request(String url) throws Exception {
@@ -40,13 +40,16 @@ public class SpiderUtil {
 			responseBody = SpiderUtil.httpClient.execute(httpget,
 					responseHandler);
 		} catch (HttpResponseException e) {
-//			if (e.getStatusCode() != 404) {
-//				throw e;
-//			}
-		} catch(Throwable t){
-			
-		}finally {
-			httpClient.getConnectionManager().shutdown();
+			// if (e.getStatusCode() != 404) {
+			// throw e;
+			// }
+		} catch (Throwable t) {
+
+		} finally {
+			try {
+				httpClient.getConnectionManager().shutdown();
+			} catch (Throwable t) {
+			}
 		}
 		return responseBody;
 	}
@@ -55,10 +58,9 @@ public class SpiderUtil {
 		List<String> linkList = new ArrayList<String>();
 		int length = page.length();
 		for (int i = 0; i < length; i++) {
-			if (page.charAt(i) == 'h'
-					&& page.charAt(i + 1) == 'r' && page.charAt(i + 2) == 'e'
-					&& page.charAt(i + 3) == 'f' && page.charAt(i + 4) == '='
-					&& page.charAt(i + 5) == '"') {
+			if (page.charAt(i) == 'h' && page.charAt(i + 1) == 'r'
+					&& page.charAt(i + 2) == 'e' && page.charAt(i + 3) == 'f'
+					&& page.charAt(i + 4) == '=' && page.charAt(i + 5) == '"') {
 				int j = i + 6;
 				StringBuffer sb = new StringBuffer();
 				char ca = page.charAt(j);
