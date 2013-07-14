@@ -3,5 +3,33 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
-  <display-name>Archetype Created Web Application</display-name>
+	<display-name>my movie</display-name>
+<filter>
+		<filter-name>encodingFilter</filter-name>
+		<filter-class>
+			com.hbd.cmdb.search.CharacterEncodingFilter
+		</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>encodingFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	<servlet>
+		<servlet-name>default</servlet-name>
+		<servlet-class>com.hbd.cmdb.search.MainServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>/controller</url-pattern>
+	</servlet-mapping>
+
 </web-app>
