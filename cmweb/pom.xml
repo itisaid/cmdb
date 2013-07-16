@@ -5,7 +5,7 @@
 	<artifactId>cmweb</artifactId>
 	<packaging>war</packaging>
 	<version>1.0-SNAPSHOT</version>
-	<name>cmweb Maven Webapp</name>
+	<name>cmweb</name>
 	<url>http://maven.apache.org</url>
 	<dependencies>
 		<dependency>
@@ -21,8 +21,8 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.hbd</groupId>
-			<artifactId>cmdb</artifactId>
+			<groupId>com.hbd.cmdb</groupId>
+			<artifactId>cmspider</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
