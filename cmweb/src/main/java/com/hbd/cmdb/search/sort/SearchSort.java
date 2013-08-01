@@ -1,6 +1,20 @@
 package com.hbd.cmdb.search.sort;
 
-public interface SearchSort {
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
-	
+import com.hbd.cmdb.search.CmdbEntry;
+import com.hbd.cmdb.search.Index;
+
+public interface SearchSort {
+	Map<String, List<CmdbEntry<String, Integer>>> indexMap = Index
+			.getInstance().getIndexMap();
+	Map<String, String> subjectSummaryMap = Index.getInstance()
+			.getSubjectSummaryMap();
+	Map<String, Integer> subjectKeyMap = Index.getInstance().getSubjectKeyMap();
+
+	Map<String, Double> sort(
+			List<List<CmdbEntry<String, Integer>>> subjectList);
+
 }

@@ -30,4 +30,27 @@ public class IndexInfo {
 		});
 		return list;
 	}
+	
+	public static List<Entry<String,Double>> sortMapDouble(Map<String,Double> map){
+		// sort
+		List<Entry<String, Double>> list = new ArrayList<Entry<String, Double>>();
+		for (Entry<String, Double> entry : map.entrySet()) {
+			list.add(entry);
+		}
+		Collections.sort(list, new Comparator<Entry<String, Double>>() {
+			public int compare(Entry<String, Double> e1,
+					Entry<String, Double> e2) {
+				double d = e2.getValue() - e1.getValue();
+				if(d>0){
+					return 1;
+				}
+				if(d<0){
+					return -1;
+				}
+				return 0;
+			}
+
+		});
+		return list;
+	}
 }

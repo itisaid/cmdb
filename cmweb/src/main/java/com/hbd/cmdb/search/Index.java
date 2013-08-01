@@ -12,10 +12,22 @@ import java.util.Map.Entry;
 import com.hbd.cmdb.BaseInfo;
 import com.hbd.cmdb.index.IndexInfo;
 
-public class Init {
+public class Index {
 	Map<String, List<CmdbEntry<String, Integer>>> indexMap = new HashMap<String, List<CmdbEntry<String, Integer>>>();
 	Map<String, String> subjectSummaryMap = new HashMap<String, String>();
 	Map<String, Integer> subjectKeyMap = new HashMap<String, Integer>();
+
+	private static Index instance = new Index();
+
+	private Index() {
+		initIndex();
+		initSubject();
+		initKey();
+	}
+
+	public static Index getInstance() {
+		return instance;
+	}
 
 	public Map<String, List<CmdbEntry<String, Integer>>> getIndexMap() {
 		return indexMap;
@@ -29,7 +41,7 @@ public class Init {
 		return this.subjectKeyMap;
 	}
 
-	public void initKey() {
+	private void initKey() {
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new InputStreamReader(new FileInputStream(
@@ -64,7 +76,7 @@ public class Init {
 	/**
 	 * init indexMap
 	 */
-	public void initIndex() {
+	private void initIndex() {
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new InputStreamReader(new FileInputStream(
@@ -99,7 +111,7 @@ public class Init {
 		}
 	}
 
-	void initSubject() {
+	private void initSubject() {
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					new FileInputStream(BaseInfo.totalSubjectFile), "UTF-8"));
@@ -116,8 +128,7 @@ public class Init {
 	}
 
 	public static void main(String[] args) {
-		Init init = new Init();
-		init.initKey();
+		Index init = new Index();
 		for (Entry<String, Integer> e : init.getSubjectKeyMap().entrySet()) {
 			System.out.println(e.getKey() + ":" + e.getValue());
 		}
