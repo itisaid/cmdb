@@ -27,9 +27,10 @@ public class Searcher {
 		Init i = new Init();
 		i.initIndex();
 		i.initSubject();
+		i.initKey();
 		this.indexMap = i.getIndexMap();
 		this.subjectSummaryMap = i.getSubjectSummaryMap();
-		SearchUtil.splitWords("hello, 钱");// init ansj by firstly invoking.
+		SearchUtil.splitWords("hello, 钱");// init ansj by firstly be invoked.
 	}
 
 	public String search(String keyWords) {

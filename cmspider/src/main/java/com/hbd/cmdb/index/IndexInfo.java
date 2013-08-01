@@ -12,6 +12,8 @@ import com.hbd.cmdb.BaseInfo;
 public class IndexInfo {
 	public static String wordCountFile = BaseInfo.indexPath + "wordcount.dat";
 	public static String wordIndexFile = BaseInfo.indexPath + "wordindex.dat";
+	public static String blackWordsFile = BaseInfo.indexPath + "blackwords.dat";
+	public static String subjectKeyFile = BaseInfo.indexPath + "subjectkey.dat";
 	
 	public static List<Entry<String,Integer>> sortMap(Map<String,Integer> map){
 		// sort

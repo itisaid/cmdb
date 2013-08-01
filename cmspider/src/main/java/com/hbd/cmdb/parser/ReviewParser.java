@@ -26,8 +26,10 @@ public class ReviewParser {
 			String subPath = f.getAbsolutePath();
 			File reviewData = new File(subPath + BaseInfo.reviewFile);
 			if (reviewData.exists()) {
+				System.out.println("----"+subPath);
 				continue;
 			}
+			System.out.println("####"+subPath);
 			File subDir = new File(subPath);
 			File[] reviews = subDir.listFiles(new FileFilter() {
 				public boolean accept(File dir) {

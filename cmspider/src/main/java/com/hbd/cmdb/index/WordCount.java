@@ -34,6 +34,7 @@ public class WordCount {
 	public void countWord() throws Exception {
 		File[] fs = ParserUtil.listSubjectDir();
 		Map<String, Integer> countMap = new HashMap<String, Integer>();
+		int fileCount=0;
 		for (File f : fs) {
 			String subPath = f.getAbsolutePath();
 			File reviewData = new File(subPath + BaseInfo.reviewFile);
@@ -49,6 +50,7 @@ public class WordCount {
 				countLine(countMap, line);
 			}
 			br.close();
+			System.out.println(reviewData.getPath()+"------"+fileCount++);
 		}
 
 		// sort

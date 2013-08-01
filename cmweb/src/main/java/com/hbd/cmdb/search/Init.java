@@ -2,12 +2,12 @@ package com.hbd.cmdb.search;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import com.hbd.cmdb.BaseInfo;
 import com.hbd.cmdb.index.IndexInfo;
@@ -15,14 +15,50 @@ import com.hbd.cmdb.index.IndexInfo;
 public class Init {
 	Map<String, List<CmdbEntry<String, Integer>>> indexMap = new HashMap<String, List<CmdbEntry<String, Integer>>>();
 	Map<String, String> subjectSummaryMap = new HashMap<String, String>();
+	Map<String, Integer> subjectKeyMap = new HashMap<String, Integer>();
 
 	public Map<String, List<CmdbEntry<String, Integer>>> getIndexMap() {
 		return indexMap;
 	}
 
-
 	public Map<String, String> getSubjectSummaryMap() {
 		return subjectSummaryMap;
+	}
+
+	public Map<String, Integer> getSubjectKeyMap() {
+		return this.subjectKeyMap;
+	}
+
+	public void initKey() {
+		BufferedReader br = null;
+		try {
+			br = new BufferedReader(new InputStreamReader(new FileInputStream(
+					IndexInfo.subjectKeyFile), "UTF-8"));
+			String line;
+			while ((line = br.readLine()) != null) {
+				String[] subject = line.split(":");
+				if (subject.length != 2) {
+					throw new RuntimeException(line);
+				}
+				String[] key = subject[1].split(";");
+				if (key.length < 1) {
+					throw new RuntimeException(line);
+				}
+				String[] count = key[0].split(",");
+				if (count.length < 1) {
+					throw new RuntimeException(line);
+				}
+				subjectKeyMap.put(subject[0], Integer.valueOf(count[1]));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				br.close();
+			} catch (Throwable e1) {
+				e1.printStackTrace();
+				throw new RuntimeException("init failed.");
+			}
+		}
 	}
 
 	/**
@@ -31,7 +67,8 @@ public class Init {
 	public void initIndex() {
 		BufferedReader br = null;
 		try {
-			br = new BufferedReader(new InputStreamReader(new FileInputStream(IndexInfo.wordIndexFile),"UTF-8"));
+			br = new BufferedReader(new InputStreamReader(new FileInputStream(
+					IndexInfo.wordIndexFile), "UTF-8"));
 			String line;
 			while ((line = br.readLine()) != null) {
 				String[] word = line.split(":");
@@ -64,7 +101,8 @@ public class Init {
 
 	void initSubject() {
 		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(BaseInfo.totalSubjectFile),"UTF-8"));
+			BufferedReader br = new BufferedReader(new InputStreamReader(
+					new FileInputStream(BaseInfo.totalSubjectFile), "UTF-8"));
 			String line;
 			while ((line = br.readLine()) != null) {
 				String[] sub = line.split(":");
@@ -76,6 +114,12 @@ public class Init {
 			throw new RuntimeException("init failed.");
 		}
 	}
-	
-	
+
+	public static void main(String[] args) {
+		Init init = new Init();
+		init.initKey();
+		for (Entry<String, Integer> e : init.getSubjectKeyMap().entrySet()) {
+			System.out.println(e.getKey() + ":" + e.getValue());
+		}
+	}
 }
