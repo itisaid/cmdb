@@ -1,5 +1,9 @@
 package com.hbd.cmdb.spider;
 
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +56,48 @@ public class SpiderUtil {
 			}
 		}
 		return responseBody;
+	}
+
+	/**
+	 * write response to file.
+	 * 
+	 * @param url
+	 * @param file
+	 * @return
+	 * @throws Exception
+	 */
+	public static void request(String url, String file) throws Exception {
+		InputStream responseBody = null;
+		OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+		try {
+			init();
+			HttpGet httpget = new HttpGet(url);
+
+			System.out.println("executing request " + httpget.getURI());
+
+			responseBody = SpiderUtil.httpClient.execute(httpget).getEntity()
+					.getContent();
+
+			byte[] b = new byte[1024 * 10];
+			int len;
+			while ((len = responseBody.read(b)) != -1) {
+				out.write(b, 0, len);
+			}
+
+		} catch (HttpResponseException e) {
+			// if (e.getStatusCode() != 404) {
+			// throw e;
+			// }
+		} catch (Throwable t) {
+
+		} finally {
+			try {
+				httpClient.getConnectionManager().shutdown();
+				out.close();
+			} catch (Throwable t) {
+			}
+		}
+
 	}
 
 	public static List<String> findLink(String page) {

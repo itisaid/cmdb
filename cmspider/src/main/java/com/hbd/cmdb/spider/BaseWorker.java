@@ -13,6 +13,7 @@ public abstract class BaseWorker implements Worker {
 	Set<String> allSubject = new HashSet<String>();
 	Set<String> finishedSubject = new HashSet<String>();
 	String urlPrefix = "http://movie.douban.com/subject/";
+	// go on downloading from break point.
 	String fs;
 	private FileOutputStream out;
 
