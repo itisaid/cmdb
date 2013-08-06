@@ -1,10 +1,14 @@
 package com.hbd.cmdb;
 
 public class BaseInfo {
-	public static String path = "/home/frank/work/github/cmdb/research/";
-	public static String indexPath = "/home/frank/work/github/cmdb/research/";
+	private static String getBaseDir() {
+		return System.getProperty("BASE_DIR", System.getProperty("user.home"));
+	}
+	
+	public static String path = getBaseDir() + "/cmdb/research/";
+	public static String indexPath = getBaseDir() + "/cmdb/research/";
 	public static String imgPath = path + "img/";
-	public static String output = "/home/frank/cmdb/";
+	public static String output = getBaseDir() + "/cmdb/";
 	public static String subjectPath = BaseInfo.path + "subject.txt";
 	public static String reviewFile = "/review.dat";
 	public static String subjectFile = "/subject.txt";
