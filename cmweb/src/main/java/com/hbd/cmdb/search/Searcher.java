@@ -27,12 +27,11 @@ public class Searcher {
 	}
 
 	public void init() {
-		Index i = Index.getInstance();
-
+		Index.getInstance();
 		SearchUtil.splitWords("hello, 钱");// init ansj by firstly be invoked.
 	}
 
-	public String search(String keyWords) {
+	public List<String> search(String keyWords) {
 		List<Term> terms = SearchUtil.splitWords(keyWords);
 
 		List<List<CmdbEntry<String, Integer>>> subjectList = new ArrayList<List<CmdbEntry<String, Integer>>>();

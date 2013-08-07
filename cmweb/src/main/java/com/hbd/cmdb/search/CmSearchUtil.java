@@ -1,5 +1,6 @@
 package com.hbd.cmdb.search;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -9,16 +10,16 @@ public class CmSearchUtil {
 			.getSubjectSummaryMap();
 	static int maxResult = 40;
 
-	public static String result(List<Entry<String, Double>> list) {
+	public static List<String> result(List<Entry<String, Double>> list) {
+		List<String> res = new ArrayList<String>();
 		int num = 0;
-		StringBuffer sb = new StringBuffer();
 		for (Entry<String, Double> e : list) {
 			if (num++ > maxResult) {
 				break;
 			}
 			String key = e.getKey();
-			sb.append(subjectSummaryMap.get(key) + "</br>");
+			res.add(subjectSummaryMap.get(key));
 		}
-		return sb.toString();
+		return res;
 	}
 }

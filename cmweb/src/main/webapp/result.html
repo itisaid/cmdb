@@ -1,6 +1,4 @@
-﻿
-<!DOCTYPE html>
-    <html lang="zh-CN" class="ua-windows ua-webkit">
+﻿    <html lang="zh-CN" class="ua-windows ua-webkit">
     
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -157,12 +155,6 @@
     
 <div id="db-global-nav" class="global-nav">
   <div class="bd">
-    
-
-
-
-
-
 
 <div class="top-nav-info">
     <a href="http://www.douban.com/accounts/login?source=movie" rel="nofollow">登录</a>
@@ -286,33 +278,7 @@
   </div>
 </div>
 
-  
-  <script id="suggResult" type="text/x-jquery-tmpl">
-      <li data-link="{{= url}}">
-          <a href="{{= url}}">
-              <img src="{{= img}}" width="40" />
-              <p>
-                  <em>{{= title}}</em>
-                  {{if year}}
-                      <span>{{= year}}</span>
-                  {{/if}}
-                  {{if sub_title}}
-                      <br /><span>{{= sub_title}}</span>
-                  {{/if}}
-                  {{if address}}
-                      <br /><span>{{= address}}</span>
-                  {{/if}}
-                  {{if episode}}
-                      {{if episode=="unknow"}}
-                          <br /><span>集数未知</span>
-                      {{else}}
-                          <br /><span>共{{= episode}}集</span>
-                      {{/if}}
-                  {{/if}}
-              </p>
-          </a>
-      </li>
-  </script>
+
   
 
 
@@ -375,7 +341,8 @@
         </table>
         <div id="collect_form_3094909"></div>
 
-            
+                
+{{#.}}
         <p class="ul"></p>
         <table width="100%">
           <tr class="item">
@@ -385,7 +352,7 @@
               </a>
             </td>
             <td valign="top"><div class="pl2">
-              <a href="http://movie.douban.com/subject/1292401/"  >真爱至上 / <span style="font-size:12px;">爱是您，爱是我(台) / 真的恋爱了(港)</span>
+              <a href="http://movie.douban.com/subject/1292401/"  >{{.}}</span>
               </a>
               <p class="pl">2003-11-07 / 休·格兰特 / 柯林·菲尔斯 / 艾玛·汤普森 / 凯拉·奈特莉 / 连姆·尼森 / 托马斯·桑斯特 / 比尔·奈伊 / 马丁·弗瑞曼 / 劳拉·琳妮 / 艾伦·瑞克曼 / 克里斯·马歇尔 / 罗德里格·桑托罗 / 罗温·艾金森 / 比利·鲍伯·松顿 / 玛汀·麦古基安...</p>
               <div class="star clearfix">
@@ -397,6 +364,7 @@
           </tr>
         </table>
         <div id="collect_form_1292401"></div>
+{{/.}}
             
         <div class="paginator">
             <span class="prev">&lt;前页</span>
@@ -588,3 +556,4 @@ var account_pop={showGrayLayer:function(){$msk=$("body").find("#login_msk");if($
             if (typeof(Do) != 'undefined') Do(_check_hijack);
             else if (typeof(get_cookie) != 'undefined') _check_hijack();
             </script></body></html>
+            
