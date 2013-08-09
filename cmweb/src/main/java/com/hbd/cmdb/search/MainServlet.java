@@ -30,7 +30,7 @@ public class MainServlet extends HttpServlet {
 	@Override
 	protected void doGet(final HttpServletRequest req,final HttpServletResponse resp) throws ServletException,
 			IOException {
-		String keys = req.getParameter("keys");
+		String keys = req.getParameter("q");
 		if(keys==null||keys.equals("")){
 			return;
 		}
