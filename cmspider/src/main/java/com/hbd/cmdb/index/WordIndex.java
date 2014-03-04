@@ -102,7 +102,7 @@ public class WordIndex {
 			Map<String, Map<String, Integer>> indexMap, String line,
 			String subject) {
 
-		List<Term> terms = ToAnalysis.paser(line);
+		List<Term> terms = ToAnalysis.parse(line);
 		BlackWords blackWords = BlackWords.getInstance();
 		for (Term term : terms) {
 			String word = term.getName();

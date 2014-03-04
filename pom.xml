@@ -13,10 +13,11 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-<modules>
-<module>cmspider</module>
-<module>cmweb</module>
-</modules>
+
+	<modules>
+	<module>cmspider</module>
+	<module>cmweb</module>
+	</modules>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -38,11 +39,6 @@
 			<groupId>org.apache.httpcomponents</groupId>
 			<artifactId>httpmime</artifactId>
 			<version>4.1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>com.github</groupId>
-			<artifactId>ans</artifactId>
-			<version>1.0</version>
 		</dependency>
 	</dependencies>
 </project>
