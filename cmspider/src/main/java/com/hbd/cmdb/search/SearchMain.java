@@ -85,7 +85,7 @@ public class SearchMain {
 	}
 
 	public List<Entry<String, Integer>> search(String keyWords) {
-		List<Term> terms = ToAnalysis.paser(keyWords);
+		List<Term> terms = ToAnalysis.parse(keyWords);
 		Map<String, Integer> subjectMap = new HashMap<String, Integer>();
 		for (Term term : terms) {
 			String key = term.getName();

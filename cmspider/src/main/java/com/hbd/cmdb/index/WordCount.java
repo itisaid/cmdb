@@ -77,7 +77,7 @@ public class WordCount {
 	}
 
 	void countLine(Map<String, Integer> countMap, String line) {
-		List<Term> terms = ToAnalysis.paser(line);
+		List<Term> terms = ToAnalysis.parse(line);
 		for (Term term : terms) {
 			String word = term.getName();
 			Integer value = countMap.get(word);

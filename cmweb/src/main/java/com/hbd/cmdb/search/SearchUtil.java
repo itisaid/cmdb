@@ -8,6 +8,6 @@ import org.ansj.splitWord.analysis.ToAnalysis;
 public class SearchUtil {
 
 	public static List<Term> splitWords(String words) {
-		return ToAnalysis.paser(words);
+		return ToAnalysis.parse(words);
 	}
 }
